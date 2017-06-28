@@ -1,0 +1,10 @@
+# Global.
+*~
+*.la
+*.lo
+*.o
+*.swp
+
+# Local.
+build/
+stealth-converter
