@@ -19,4 +19,11 @@ namespace stream_reader
     return video_;
   }
 
+  inline
+  const std::string&
+  StreamReader::video_name_get() const
+  {
+    return video_name_;
+  }
+
 } // namespace stream_reader
