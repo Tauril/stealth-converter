@@ -3,12 +3,14 @@ project(stealth-converter CXX)
 cmake_minimum_required(VERSION 3.5.1)
 
 set(CMAKE_CXX_COMPILER "g++")
-set(CMAKE_CXX_FLAGS "-std=c++14 -Werror -Wextra -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall")
 
 find_package(OpenCV REQUIRED)
 
 include_directories("src/")
+add_subdirectory("src/stream-reader/")
 
-add_executable(stealth-converter src/stealth-converter.cc)
+add_executable(stealth-converter src/stealth-converter.cc
+               $<TARGET_OBJECTS:STREAM_READER>)
 
 target_link_libraries(stealth-converter ${OpenCV_LIBS})

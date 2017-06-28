@@ -1,4 +1,6 @@
-#include <opencv2/opencv.hpp>
+#include <iostream>
+
+#include "stream-reader/stream-reader.hh"
 
 using namespace cv;
 
@@ -6,23 +8,17 @@ int main(int argc, char** argv)
 {
   if (argc != 2)
   {
-    std::cout << "usage: DisplayImage.out <Image_Path>" << std::endl;
-    return -1;
+    std::cerr << "usage: stealth-converter <Video_Path>" << std::endl;
+    return 1;
   }
 
-  Mat image;
-  image = imread(argv[1], 1);
+  stream_reader::StreamReader stream_reader(argv[1]);
 
-  if (!image.data)
+  if (!stream_reader.video_get().isOpened())
   {
-    std::cout << "No image data" << std::endl;
-    return -1;
+    std::cerr << "Could not open input video" << std::endl;
+    return 2;
   }
-
-  namedWindow("Display Image", WINDOW_AUTOSIZE);
-  imshow("Display Image", image);
-
-  waitKey(0);
 
   return 0;
 }
