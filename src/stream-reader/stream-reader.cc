@@ -11,19 +11,19 @@ namespace stream_reader
   void
   StreamReader::run()
   {
-    using namespace cv;
-
     for (;;)
     {
-      Mat frame;
-      video_ >> frame; // get a new frame from camera
+      cv::Mat frame;
+      video_ >> frame;
+
+      double timestamp = video_.get(CV_CAP_PROP_POS_MSEC);
+      std::cout << timestamp / 1000 << std::endl;
 
       if (frame.empty())
         break;
 
-      //cvtColor(frame, edges);
-      imshow(video_name_, frame);
-      if (waitKey(25) >= 1000) break;
+      cv::imshow(video_name_, frame);
+      //if (cv::waitKey(30) >= 0) break;
     }
   }
 
