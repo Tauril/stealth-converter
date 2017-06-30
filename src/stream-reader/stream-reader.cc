@@ -23,7 +23,7 @@ namespace stream_reader
         break;
 
       cv::imshow(video_name_, frame);
-      //if (cv::waitKey(30) >= 0) break;
+      if (cv::waitKey(30) >= 1000) break;
     }
   }
 
