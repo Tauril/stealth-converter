@@ -4,6 +4,7 @@
 *.lo
 *.o
 *.swp
+.vscode
 
 # Local.
 build/
