@@ -29,6 +29,7 @@ pkg_check_modules(_FFMPEG_AVCODEC libavcodec)
 pkg_check_modules(_FFMPEG_AVFORMAT libavformat)
 pkg_check_modules(_FFMPEG_AVUTIL libavutil)
 pkg_check_modules(_FFMPEG_AVFILTER libavfilter)
+pkg_check_modules(_FFMPEG_SWSCALE libswscale)
 endif (PKG_CONFIG_FOUND)
 
 find_path(FFMPEG_AVCODEC_INCLUDE_DIR
@@ -57,7 +58,12 @@ NAMES avutil
 PATHS ${_FFMPEG_AVUTIL_LIBRARY_DIRS} /usr/lib /usr/local/lib /opt/local/lib /sw/lib
 )
 
-if (FFMPEG_LIBAVCODEC AND FFMPEG_LIBAVFORMAT AND FFMPEG_LIBAVFILTER)
+find_library(FFMPEG_LIBSWSCALE
+NAMES swscale
+PATHS ${_FFMPEG_SWSCALE_LIBRARY_DIRS} /usr/lib /usr/local/lib /opt/local/lib /sw/lib
+)
+
+if (FFMPEG_LIBAVCODEC AND FFMPEG_LIBAVFORMAT AND FFMPEG_LIBAVFILTER AND FFMPEG_LIBSWSCALE)
 set(FFMPEG_FOUND TRUE)
 endif()
 
@@ -69,6 +75,7 @@ ${FFMPEG_LIBAVCODEC}
 ${FFMPEG_LIBAVFORMAT}
 ${FFMPEG_LIBAVUTIL}
 ${FFMPEG_LIBAVFILTER}
+${FFMPEG_LIBSWSCALE}
 )
 
 endif (FFMPEG_FOUND)
