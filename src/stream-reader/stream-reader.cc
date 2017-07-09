@@ -9,7 +9,7 @@ namespace stream_reader
   {};
 
   void
-  StreamReader::run()
+  StreamReader::read()
   {
     for (;;)
     {
@@ -25,6 +25,12 @@ namespace stream_reader
       cv::imshow(video_name_, frame);
       if (cv::waitKey(30) >= 1000) break;
     }
+  }
+
+  void
+  StreamReader::filter_iframes()
+  {
+    AVFilter* select  = avfilter_get_by_name("select");
   }
 
 } // namespace stream_reader

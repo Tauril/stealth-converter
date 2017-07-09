@@ -2,6 +2,15 @@
 
 #include <iostream>
 
+extern "C"
+{
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavfilter/avfilter.h>
+#include <libavfilter/avfiltergraph.h>
+#include <libavutil/opt.h>
+}
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -14,7 +23,9 @@ namespace stream_reader
     public:
       StreamReader(const std::string& video);
 
-      void run();
+      void read();
+
+      void filter_iframes();
 
       const cv::VideoCapture& video_get() const;
       cv::VideoCapture& video_get();
