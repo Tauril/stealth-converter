@@ -8,8 +8,9 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  stream_reader::StreamReader stream_reader(argv[1]);
-  stream_reader.read();
+  stream_reader::StreamReader::Instance(argv[1]);
+  stream_reader::StreamReader::Instance().open_input_file();
+  stream_reader::StreamReader::Instance().get_iframes();
 
   return 0;
 }

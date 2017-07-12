@@ -7,9 +7,9 @@ namespace stream_reader
 
   inline
   const std::string&
-  StreamReader::video_name_get() const
+  StreamReader::video_get() const
   {
-    return video_name_;
+    return video_;
   }
 
 } // namespace stream_reader

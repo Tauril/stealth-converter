@@ -1,17 +1,18 @@
 #pragma once
 
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 #include <vector>
 
 extern "C" {
 #include <libavcodec/avcodec.h>
-#include <libavfilter/avfilter.h>
-#include <libavfilter/avfiltergraph.h>
 #include <libavformat/avformat.h>
+#include <libavfilter/avfiltergraph.h>
+#include <libavfilter/buffersink.h>
+#include <libavfilter/buffersrc.h>
 #include <libavutil/avutil.h>
-#include <libavutil/opt.h>
-#include <libavutil/pixdesc.h>
 #include <libswscale/swscale.h>
 }
 
@@ -25,26 +26,33 @@ namespace stream_reader
   class StreamReader
   {
     public:
-      StreamReader(const std::string& video);
+      static StreamReader& Instance(const std::string& video = "");
+
+      StreamReader(const StreamReader&) = delete;
+      StreamReader& operator=(const StreamReader&) = delete;
+
       ~StreamReader();
 
-      void read();
+      void open_input_file();
+      void init_filter_graph();
 
-      void filter_iframes();
+      void get_iframes();
 
-      const std::string& video_name_get() const;
+      const std::string& video_get() const;
 
     private:
-      std::string video_name_;
-      AVFormatContext* in_ctx_            = nullptr;
-      AVStream* vstream_                  = nullptr;
-      int vstream_index_;
-      AVFrame* frame_                     = nullptr;
-      std::vector<uint8_t> frame_buff_;
-      AVFrame* dec_frame_                 = nullptr;
-      SwsContext* sws_ctx_                = nullptr;
-      int height_;
-      int width_;
+      StreamReader(const std::string& video);
+
+      std::string video_;
+
+      static constexpr const char* filter_ = "select='eq(pict_type,I)'";
+
+      AVFormatContext* format_ctx_ = nullptr;
+      AVCodecContext* codec_ctx_ = nullptr;
+      AVFilterContext* buffer_sink_ctx_ = nullptr;
+      AVFilterContext* buffer_src_ctx_ = nullptr;
+      AVFilterGraph* filter_graph_ = nullptr;
+      int vstream_idx_;
   };
 
 } // namespace stream_reader
