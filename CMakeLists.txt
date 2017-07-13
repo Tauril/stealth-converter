@@ -3,7 +3,7 @@ project(stealth-converter CXX)
 cmake_minimum_required(VERSION 3.5.1)
 
 set(CMAKE_CXX_COMPILER "g++")
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall -g3")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 

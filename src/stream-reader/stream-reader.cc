@@ -173,10 +173,12 @@ namespace stream_reader
             if (ret < 0)
               break;
 
-            std::cout << "Process frame: " << ++nb_frame << std::endl;
+            std::cout << "Process iframe: " << ++nb_frame << std::endl;
+            std::cout << "Frame number: "
+                      << frame_out->coded_picture_number << std::endl;
 
             // Private scope just to display frame for debugging purpose.
-            {
+           /* {
               cv::Mat m;
               AVFrame dst;
               int w = frame_out->width;
@@ -198,9 +200,15 @@ namespace stream_reader
 
               cv::imshow(video_, m);
 
-              if (cv::waitKey(100) >= 1000)
+              std::cout << "Frame number: "
+                        << frame_out->coded_picture_number << std::endl;
+
+              if (cv::waitKey(0) < 0)
                 break;
-            }
+
+              sws_freeContext(sws_ctx);
+              m.release();
+            }*/
             av_frame_unref(frame_out.get());
           }
         }
