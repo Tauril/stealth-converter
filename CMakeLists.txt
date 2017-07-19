@@ -8,7 +8,9 @@ set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall -g3")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
 include_directories(".")
+
 add_subdirectory("src/stream")
+add_subdirectory("src/video-converter/")
 
 add_executable(stealth-converter src/stealth-converter.cc
                $<TARGET_OBJECTS:STREAM>)
