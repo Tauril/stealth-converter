@@ -23,9 +23,9 @@ namespace stream
            reader::StreamReader::Instance().iframes_split_get())
       {
         cv::VideoWriter vwriter;
-        vwriter.open("__stealth_reader_output_"
-                     + std::to_string(nb_video) + ".mp4",
-                     0x00000021,
+        auto video_name =
+          "__stealth_reader_output_" + std::to_string(nb_video) + ".mp4";
+        vwriter.open(video_name, 0x00000021,
                      StreamData::Instance().fps_get(),
                      cv::Size(video.get(CV_CAP_PROP_FRAME_WIDTH),
                               video.get(CV_CAP_PROP_FRAME_HEIGHT)));
@@ -40,6 +40,10 @@ namespace stream
 
         std::cout << "Processing frames [" << iframes.first
                   << ", " << iframes.second << "]" << std::endl;
+
+        std::cout << video_name << ":"
+                  << std::to_string(iframes.second - iframes.first)
+                  << std::endl;
 
         for (; nb_frame <= iframes.second; nb_frame++)
         {
