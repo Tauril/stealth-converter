@@ -7,6 +7,8 @@
 #include "stream-data.hh"
 #include "stream-reader.hh"
 
+#include <tbb/parallel_for_each.h>
+
 namespace stream
 {
 

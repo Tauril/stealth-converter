@@ -26,4 +26,12 @@ if (FFMPEG_FOUND)
   target_link_libraries(stealth-converter ${FFMPEG_LIBRARIES})
 endif (FFMPEG_FOUND)
 
+find_package(TBB REQUIRED)
+if (TBB_FOUND)
+  message("Found TBB library")
+  include_directories(${TBB_INCLUDE_DIRS})
+  add_definitions(${TBB_DEFINITIONS})
+  target_link_libraries(stealth-converter ${TBB_LIBRARIES})
+endif (TBB_FOUND)
+
 target_link_libraries(stealth-converter "-lm -lavresample")
