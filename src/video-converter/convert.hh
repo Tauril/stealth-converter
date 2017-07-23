@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <cmath>
 #include <vector>
 #include "cube-coordinate.hh"
 
@@ -126,37 +125,37 @@ namespace convert
         of the cube, which are the edges of the top and down surface */
         double phiThreshold;
 
-        inline void calXY(const int& i, const int& j);
+        /** \brief Calculate the x and y coordinates of given i and j
+         *
+         * \param i const int&  The coordinate along the width axis
+         * \param j const int&  The coordinate along the height axis
+         * \return void
+         */
+        inline void computePos(const int& i, const int& j);
 
-        inline void calXYZ(const int& i, const int& j, double& x,
-                           double& y, double& z);
-
-        inline void calNormXY(const int& i, const int& j, double& x, double& y);
-        inline void calThetaAndPhi(const double& x, const double& y,
-                                   double& theta, double& phi);
-        inline void calXyzFromThetaPhi(const double& theta, const double& phi,
-                                       double& x, double& y, double& z);
-
+        /** \brief Calculate the face which the point is on
+         *
+         * \param theta const double&
+         * \param phi const double&
+         * \return void
+         */
         inline void calCubeFace(const double& theta, const double& phi);
 
+        /** \brief Locate the point in the cubic image
+         *
+         * \param axis const double& The sphere coordinate along the axis
+         * \param px   const double&
+         * \param py   const double&
+         * \param rad  const double&
+         * \return void
+         */
         inline void locate(const double& axis, const double& px,
                            const double& py, const double& rad);
 
-        // the helper functions
-        inline bool cmpDoubleEqual(const double& a, const double& b,
-                                   const double& epsilon);
-        inline bool cmpDoubleSmaller(const double& a, const double& b,
-                                     const double& epsilon);
-        inline bool cmpDoubleEqualSmaller(const double& a, const double& b,
-                                          const double& epsilon);
-        inline bool cmpDoubleLarger(const double& a, const double& b,
-                                    const double& epsilon);
-        inline bool cmpDoubleEqualLarger(const double& a, const double& b,
-                                         const double& epsilon);
+        /** Test if double value in in the range of [small, large)
+            TODO: move to helper class
+        */
         inline bool isDoubleInRange(const double& value, const double& small,
                                     const double& large, const double& epsilon);
-
-        inline void rotRad(double rad, double& x, double& y, double& temp);
-        inline void transDis(double dis, double& x, double& y);
     };
 }
