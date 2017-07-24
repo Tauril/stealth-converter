@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include "cube-coordinate.hh"
 
@@ -15,28 +14,6 @@ namespace convert
         // sphere radius
         const int sphere_radius = 1.0;
     }
-
-    /** This class represents the main processing step to convert a 2D video
-     ** into a "false" 3D video
-     ** The main method of this class is .....
-     ** The input of this method is a 2D frame and a noise sample. Default
-     ** noise sanmple is transparent. (Maybe false #tbd)
-     ** The output is an equirectangle frame with a 2:1 aspect ratio
-     ** and 7168:3584 or higher resolution (YouTube format)
-     **
-     ** The aim is to use the input frames and noises as a cubemap and convert
-     ** it to equirectangle.
-     ** The next step ought to be grouping all the equirectangle frame
-     ** into a video with ffmpeg
-     */
-
-    /** This class in in need of a Wrapper that will do the following:
-     ** 2 Options : Transparent all pixels value at 0 (0, 0, 0, 0)
-     ** Noise generated :  rand() to add noise, and conv2() or
-     ** imfilter() to blur the image.
-     ** + option parallel or not with TBB
-     ** compute(picture + Transparent or noise) returns Equirectangle
-     */
 
     // At the moment the main function of the converter (getCoordinate) returns
     // the adequate position in the cubemap from which the pixel should be
@@ -83,6 +60,9 @@ namespace convert
 
         const CubeCoordinate* getCoordinate(const unsigned int x,
                                             const unsigned int y) const;
+
+        unsigned int getPanoSizeV() const;
+        unsigned int getPanoSizeH() const;
 
     private:
         /**< The map from panorama coordinates to cubic coordinates */

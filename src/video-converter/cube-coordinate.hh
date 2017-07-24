@@ -4,12 +4,12 @@ namespace convert
 {
     enum class CubeFace
     {
-        top,
-        left,
-        front,
-        right,
-        back,
-        down
+        top = 0,
+        left = 1,
+        front = 2,
+        right = 3,
+        back = 4,
+        down = 5
     };
 
     class CubeCoordinate

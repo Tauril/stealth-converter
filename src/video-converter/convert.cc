@@ -55,6 +55,16 @@ namespace convert
         }
     }
 
+    unsigned int Converter::getPanoSizeV() const
+    {
+        return this->pxPanoSizeV;
+    }
+
+    unsigned int Converter::getPanoSizeH() const
+    {
+        return this->pxPanoSizeH;
+    }
+
     const CubeCoordinate* Converter::getCoordinate(const unsigned int x,
                                                    const unsigned int y) const
     {
