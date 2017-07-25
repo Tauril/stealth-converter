@@ -6,7 +6,7 @@ namespace convert
 
     Converter::Converter(unsigned int pxInW, double rdInV, double rdInH)
         : Converter(rdInH / constants::m_pi2 * pxInW,
-                    rdInH / constants::m_pi2 * rdInV, pxInW,
+                    rdInV / constants::m_pi2 * pxInW, pxInW,
                     rdInV, rdInH)
     {}
 
@@ -38,12 +38,11 @@ namespace convert
             phiThreshold(0.0)
     {
         map = std::vector<CubeCoordinate*>();
-        unsigned int pos = 0;
 
         for (unsigned int x = 0; x < pxPanoSizeH; ++x) {
-            for (unsigned int y = 0; y < pxPanoSizeV; ++y, ++pos) {
+            for (unsigned int y = 0; y < pxPanoSizeV; ++y) {
                 computePos(x, y);
-                map[pos] = new CubeCoordinate(cubeFaceId, mappedX, mappedY);
+                map.push_back(new CubeCoordinate(cubeFaceId, mappedX, mappedY));
             }
         }
     }

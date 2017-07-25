@@ -30,7 +30,6 @@ namespace convert
     class FrameHandler
     {
     public:
-        FrameHandler() = default;
         void process(std::vector<std::string> inputs);
     };
 }

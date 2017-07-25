@@ -1,9 +1,11 @@
 #include <vector>
 #include <string>
 #include <cassert>
+#include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "frame-handler.hh"
+#include "helper.hh"
 
 namespace convert
 {
@@ -11,18 +13,18 @@ namespace convert
     {
         assert(inputs.size() == 1 || inputs.size() == 6);
 
-        std::vector<const cv::Mat&> frames();
+        std::vector<cv::Mat> frames;
         size_t width = 0;
         // Read the 6 input images
         for (auto img : inputs) {
-            cv::Mat image = cv::imread(img, cv::CV_LOAD_IMAGE_COLOR);
+            cv::Mat image = cv::imread(img, CV_LOAD_IMAGE_COLOR);
             if (!image.data) {
                 printf( " No image data \n " );
                 return;
             }
             // for now assume the pictures are squares
-            assert(image.elemSize() == image.elemSize1());
-            width = image.elemSize();
+            assert(image.rows == image.cols);
+            width = image.rows;
             frames.push_back(image);
         }
 
@@ -35,7 +37,7 @@ namespace convert
         */
         Converter cvrt(width, constants::m_pi, 2.0 * constants::m_pi);
 
-        cv::Mat output(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), cv::CV_8UC4);
+        cv::Mat output(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), CV_8UC3);
 
         // Map the pixels from the panorama back to the source image
         for (size_t i = 0; i < cvrt.getPanoSizeH(); ++i) {
@@ -43,11 +45,11 @@ namespace convert
                 // Get the corresponding position of (i, j)
                 auto coord = cvrt.getCoordinate(i, j);
                 // output pixel
-                cv::Vec4b& rgba = output.at<cv::Vec4b>(i, j);
+                cv::Vec3b& rgba = output.at<cv::Vec3b>(j, i);
 
                 if (frames.size() == 1) {
-                    if (coord.getCubeFace() == CubeFace::front) {
-                        rgba = frames[0].at<cv::Vec4b>(coord.getX(), coord.getY());
+                    if (coord->getCubeFace() == CubeFace::front) {
+                        rgba = frames[0].at<cv::Vec3b>(coord->getY(), coord->getX());
                     }
                     else {
                         // For now no noise. Later if the video is properly converted
@@ -55,11 +57,16 @@ namespace convert
                         rgba[0] = 0;
                         rgba[1] = 0;
                         rgba[2] = 0;
-                        rgba[3] = 0;
                     }
                 }
                 else {
-                    rgba = frames[coord.getCubeFace()].at<cv::Vec4b>(coord.getX(), coord.getY());
+                    int index = help::as_integer<CubeFace>(coord->getCubeFace());
+                    const auto& toto = frames[index];
+                    int y_coord = coord->getY();
+                    int x_coord = coord->getX();
+                    if (x_coord > 640 || y_coord > 640)
+                        std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
+                    rgba = toto.at<cv::Vec3b>(x_coord, y_coord);
                 }
             }
         }
@@ -67,8 +74,9 @@ namespace convert
         // For now this stay commented
         // cv::imwrite( "path/image.png", output);
 
-        cv::namedWindow( "Test image", cv::CV_WINDOW_AUTOSIZE);
+        cv::namedWindow( "Test image", CV_WINDOW_AUTOSIZE);
         cv::imshow( "Test image", output);
         cv::waitKey(0);
+        imwrite( "marques.png", output);
     }
 }

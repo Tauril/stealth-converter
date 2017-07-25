@@ -3,7 +3,7 @@ project(stealth-converter CXX)
 cmake_minimum_required(VERSION 3.5.1)
 
 set(CMAKE_CXX_COMPILER "g++")
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall -g3")
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wextra -Wall -g3 -O0")
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
@@ -13,7 +13,7 @@ add_subdirectory("src/stream")
 add_subdirectory("src/video-converter/")
 
 add_executable(stealth-converter src/stealth-converter.cc
-               $<TARGET_OBJECTS:STREAM>)
+               $<TARGET_OBJECTS:STREAM> $<TARGET_OBJECTS:VIDEO_CONVERTER>)
 
 find_package(OpenCV REQUIRED)
 if (OPENCV_FOUND)

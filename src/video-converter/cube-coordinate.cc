@@ -4,23 +4,23 @@ namespace convert
 {
     CubeCoordinate::CubeCoordinate(CubeFace face, double x, double y)
     {
-        this.face = face;
-        this.x = x;
-        this.y = y;
+        this->face = face;
+        this->x = x;
+        this->y = y;
     }
     
     CubeFace CubeCoordinate::getCubeFace() const
     {
-        return this.face;
+        return this->face;
     }
     
     double CubeCoordinate::getX() const
     {
-        return this.x;
+        return this->x;
     }
     
     double CubeCoordinate::getY() const
     {
-        return this.y;
+        return this->y;
     }
 }
