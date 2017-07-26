@@ -19,11 +19,19 @@ enum class ProgramChoice {
     recombine
 };
 
+void help() {
+    std::cerr << "usage:" << std::endl;
+    std::cerr << "\thelp:\t\t" << "stealth-converter [-h|--help]" << std::endl;
+    std::cerr << "\tsplit:\t\t" << "stealth-converter [-s|--split] <Video_Path>" << std::endl;
+    std::cerr << "\tconvert:\t" << "stealth-converter [-c|--convert] <Video_Path1> ..." << std::endl;
+    std::cerr << "\trecombine:\t" << "stealth-converter [-r|--recombine] ???????? " << std::endl;
+}
+
 int main(int argc, char** argv)
 {
     if (argc < 2 || cmdOptionExists(argv, argv + argc, "-h")
             || cmdOptionExists(argv, argv + argc, "--help")) {
-        // Call help function
+        help();
         return 0;
     }
     ProgramChoice prgm = ProgramChoice::split;
@@ -42,8 +50,7 @@ int main(int argc, char** argv)
     if (prgm == ProgramChoice::split) {
         if (params.size() != 1)
         {
-            // call help fct
-            std::cerr << "usage: stealth-converter <Video_Path>" << std::endl;
+            help();
             return 1;
         }
 
