@@ -4,6 +4,7 @@
 #include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include "frame-handler.hh"
 #include "helper.hh"
 
@@ -19,11 +20,10 @@ namespace convert
         for (auto img : inputs) {
             cv::Mat image = cv::imread(img, CV_LOAD_IMAGE_COLOR);
             if (!image.data) {
-                printf( " No image data \n " );
+                printf( "No image data\n" );
                 return;
             }
-            // for now assume the pictures are squares
-            assert(image.rows == image.cols);
+            squarify(image);
             width = image.rows;
             frames.push_back(image);
         }
@@ -72,5 +72,31 @@ namespace convert
         }
 
         cv::imwrite("marques.png", output);
+    }
+
+    inline void FrameHandler::squarify(cv::Mat& img)
+    {
+        if (img.rows == img.cols)
+            return;
+        ssize_t top = 0;
+        ssize_t bottom = 0;
+        ssize_t left = 0;
+        ssize_t right = 0;
+        ssize_t side = 0;
+
+        if (img.rows > img.cols) {
+            left = (img.rows - img.cols) / 2;
+            right = (img.rows - img.cols) / 2;
+            side = img.rows;
+        }
+        else {
+            top = (img.cols - img.rows) / 2;
+            bottom = (img.cols - img.rows) / 2;
+            side = img.cols;
+        }
+        cv::Mat square_img(side, side, CV_8UC3);
+        copyMakeBorder(img, square_img, top, bottom, left, right,
+                       cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
+        img = square_img;
     }
 }

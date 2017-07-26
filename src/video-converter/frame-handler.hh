@@ -31,5 +31,7 @@ namespace convert
     {
     public:
         void process(std::vector<std::string> inputs);
+    private:
+        inline void squarify(cv::Mat& img);
     };
 }
