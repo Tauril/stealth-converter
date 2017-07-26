@@ -64,19 +64,13 @@ namespace convert
                     const auto& toto = frames[index];
                     int y_coord = coord->getY();
                     int x_coord = coord->getX();
-                    if (x_coord > 640 || y_coord > 640)
-                        std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
-                    rgba = toto.at<cv::Vec3b>(x_coord, y_coord);
+                    // if (x_coord > 640 || y_coord > 640)
+                    //     std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
+                    rgba = toto.at<cv::Vec3b>(y_coord, x_coord);
                 }
             }
         }
-        // Write the output file
-        // For now this stay commented
-        // cv::imwrite( "path/image.png", output);
 
-        cv::namedWindow( "Test image", CV_WINDOW_AUTOSIZE);
-        cv::imshow( "Test image", output);
-        cv::waitKey(0);
-        imwrite( "marques.png", output);
+        cv::imwrite("marques.png", output);
     }
 }

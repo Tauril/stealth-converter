@@ -20,7 +20,7 @@ namespace convert
         double getX() const;
         double getY() const;
 
-    private:        
+    private:
         CubeFace face;
         double x;
         double y;

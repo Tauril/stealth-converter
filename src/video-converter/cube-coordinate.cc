@@ -8,17 +8,17 @@ namespace convert
         this->x = x;
         this->y = y;
     }
-    
+
     CubeFace CubeCoordinate::getCubeFace() const
     {
         return this->face;
     }
-    
+
     double CubeCoordinate::getX() const
     {
         return this->x;
     }
-    
+
     double CubeCoordinate::getY() const
     {
         return this->y;
