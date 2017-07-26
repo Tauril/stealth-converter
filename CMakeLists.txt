@@ -9,6 +9,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
 include_directories(".")
 
+if (NOT DEFINED PARALLEL)
+  set(PARALLEL 0)
+endif ()
+
+if (PARALLEL EQUAL 1)
+  add_definitions(-DPARALLEL)
+endif ()
+
 add_subdirectory("src/stream")
 add_subdirectory("src/video-converter/")
 

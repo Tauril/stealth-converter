@@ -21,8 +21,12 @@ namespace stream
       const auto& iframes_p =
         reader::StreamReader::Instance().iframes_split_get();
 
+#ifdef PARALLEL
       tbb::parallel_for_each(iframes_p.begin(), iframes_p.end(),
         [&](const auto& iframes)
+#else
+        for (const auto& iframes : iframes_p)
+#endif
         {
           cv::VideoCapture video(StreamData::Instance().video_name_get());
           int nb_frame = iframes.first;
@@ -64,7 +68,10 @@ namespace stream
 
           vwriter.release();
           video.release();
-        });
+        }
+#ifdef PARALLEL
+      );
+#endif
     }
 
   } // namespace writer

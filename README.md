@@ -9,3 +9,6 @@ Requirements:
 - libavformat 56.40.101
 - libavcodec  56.60.100
 
+launch:
+
+./stealth-converter file.mp4 -DPARALLEL=[0,1]
