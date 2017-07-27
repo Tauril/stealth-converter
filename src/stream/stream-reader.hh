@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <vector>
 #include <utility>
@@ -41,6 +42,7 @@ namespace stream
         void get_iframes();
 
         const std::vector<std::pair<int, int>>& iframes_split_get() const;
+        std::map<int, int> iframes_pos_get();
 
       private:
         StreamReader(const std::string& video);
@@ -55,6 +57,7 @@ namespace stream
         int vstream_idx_;
 
         std::vector<std::pair<int, int>> iframes_split_;
+        std::map<int, int> iframes_pos_;
     };
 
   } // namespace reader

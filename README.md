@@ -11,4 +11,5 @@ Requirements:
 
 launch:
 
-./stealth-converter file.mp4 -DPARALLEL=[0,1]
+./configure -DPARALLEL=[0,1]
+./stealth-converter file.mp4

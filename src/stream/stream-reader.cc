@@ -199,6 +199,7 @@ namespace stream
               auto current_frame_number = frame_out->coded_picture_number;
               if (current_frame_number != right)
               {
+                iframes_pos_.emplace(left, nb_frame - 2);
                 right = current_frame_number;
                 iframes_split_.emplace_back(left, right);
                 left = right + 1;
@@ -240,8 +241,11 @@ namespace stream
         av_free_packet(&packet);
       }
       if (left < StreamData::Instance().nb_frames_get())
+      {
         iframes_split_.emplace_back(left,
                                     StreamData::Instance().nb_frames_get());
+        iframes_pos_.emplace(left, nb_frame - 1);
+      }
     }
 
   } // namespace reader

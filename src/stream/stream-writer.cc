@@ -16,10 +16,10 @@ namespace stream
     void
     StreamWriter::split_video() const
     {
-      int nb_video = -1;
-
       const auto& iframes_p =
         reader::StreamReader::Instance().iframes_split_get();
+      auto iframes_pos =
+        reader::StreamReader::Instance().iframes_pos_get();
 
 #ifdef PARALLEL
       tbb::parallel_for_each(iframes_p.begin(), iframes_p.end(),
@@ -30,13 +30,14 @@ namespace stream
         {
           cv::VideoCapture video(StreamData::Instance().video_name_get());
           int nb_frame = iframes.first;
+          int video_number = iframes_pos[nb_frame];
 
           if (!video.set(CV_CAP_PROP_POS_FRAMES, nb_frame))
             std::cerr << "Couldn't set next frame" << std::endl;
 
           cv::VideoWriter vwriter;
           auto video_name =
-            "__stealth_reader_output_" + std::to_string(++nb_video) + ".mp4";
+            "__stealth_reader_output_" + std::to_string(video_number) + ".mp4";
           vwriter.open(video_name, 0x00000021,
                        StreamData::Instance().fps_get(),
                        cv::Size(video.get(CV_CAP_PROP_FRAME_WIDTH),
