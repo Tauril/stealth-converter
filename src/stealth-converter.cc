@@ -75,12 +75,7 @@ int main(int argc, char** argv)
     }
     else if (prgm == ProgramChoice::recombine)
     {
-      std::vector<std::string> sub_videos;
-
-      for (int i = 2; i < argc; i++)
-        sub_videos.emplace_back(argv[i]);
-
-      stream::writer::StreamWriter::Instance().construct_video(sub_videos);
+      stream::writer::StreamWriter::Instance().construct_video(params);
     }
 
     return 0;

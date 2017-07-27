@@ -51,8 +51,22 @@ namespace convert
         cv::Mat* output = new cv::Mat(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), CV_8UC3);
 
         // Map the pixels from the panorama back to the source image
+#ifdef PARALLEL
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, cvrt.getPanoSizeH()),
+          [&](const auto& range_i)
+        {
+          for (size_t i = range_i.begin(); i < range_i.end(); i++)
+          {
+            tbb::parallel_for(tbb::blocked_range<size_t>(0, cvrt.getPanoSizeV()),
+              [&](const auto& range_j)
+          {
+            for (size_t j = range_j.begin(); j < range_j.end(); j++)
+            {
+
+#else
         for (size_t i = 0; i < cvrt.getPanoSizeH(); ++i) {
             for (size_t j = 0; j < cvrt.getPanoSizeV(); ++j) {
+#endif
                 // Get the corresponding position of (i, j)
                 auto coord = cvrt.getCoordinate(i, j);
                 // output pixel
@@ -79,8 +93,12 @@ namespace convert
                     //     std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
                     rgba = toto.at<cv::Vec3b>(y_coord, x_coord);
                 }
+#ifdef PARALLEL
+            }});}});
+#else
             }
         }
+#endif
         return output;
     }
 
@@ -100,11 +118,19 @@ namespace convert
             std::cerr << "Error: empty video file" << std::endl;
             return;
         }
-        cv::Size video_size = cv::Size(frame.cols, frame.rows);
-        output_video.open("test_name.mp4",  0x00000021, capture.get(CV_CAP_PROP_FPS), video_size, true);
+        std::string trunced_name = input_video;
+        trunced_name.erase(trunced_name.end() - 4, trunced_name.end());
+
+        auto new_name = trunced_name + "_new.mp4";
+
+        auto p_frame = *process(frame);
+        cv::Size video_size = cv::Size(p_frame.cols, p_frame.rows);
+        output_video.open(new_name, 0x00000021, capture.get(CV_CAP_PROP_FPS),
+                          video_size);
         while (opened) {
-            output_video << *process(frame);
+            output_video << p_frame;
             opened = capture.read(frame);
+            p_frame = *process(frame);
         }
         capture.release();
         output_video.release();

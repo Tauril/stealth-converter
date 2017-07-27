@@ -4,6 +4,8 @@
 #include "cube-coordinate.hh"
 #include "convert.hh"
 
+#include <tbb/tbb.h>
+
 namespace convert
 {
     /** This class represents the main processing step to convert a 2D video
