@@ -50,9 +50,6 @@ namespace stream
           }
 
 
-          std::cout << "Processing frames [" << iframes.first
-                    << ", " << iframes.second << "]" << std::endl;
-
           std::cout << video_name << ":"
                     << std::to_string(iframes.second - iframes.first)
                     << std::endl;

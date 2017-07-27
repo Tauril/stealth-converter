@@ -192,9 +192,7 @@ namespace stream
               if (ret < 0)
                 break;
 
-              std::cout << "Process iframe: " << ++nb_frame << std::endl;
-              std::cout << "Frame number: "
-                        << frame_out->coded_picture_number << std::endl;
+              ++nb_frame;
 
               auto current_frame_number = frame_out->coded_picture_number;
               if (current_frame_number != right)

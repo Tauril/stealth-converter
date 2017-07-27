@@ -52,17 +52,10 @@ namespace convert
 
         // Map the pixels from the panorama back to the source image
 #ifdef PARALLEL
-        tbb::parallel_for(tbb::blocked_range<size_t>(0, cvrt.getPanoSizeH()),
-          [&](const auto& range_i)
+        tbb::parallel_for(size_t(0), size_t(cvrt.getPanoSizeH()), [&](auto i)
         {
-          for (size_t i = range_i.begin(); i < range_i.end(); i++)
+          tbb::parallel_for(size_t(0), size_t(cvrt.getPanoSizeV()), [&](auto j)
           {
-            tbb::parallel_for(tbb::blocked_range<size_t>(0, cvrt.getPanoSizeV()),
-              [&](const auto& range_j)
-          {
-            for (size_t j = range_j.begin(); j < range_j.end(); j++)
-            {
-
 #else
         for (size_t i = 0; i < cvrt.getPanoSizeH(); ++i) {
             for (size_t j = 0; j < cvrt.getPanoSizeV(); ++j) {
@@ -94,7 +87,7 @@ namespace convert
                     rgba = toto.at<cv::Vec3b>(y_coord, x_coord);
                 }
 #ifdef PARALLEL
-            }});}});
+            });});
 #else
             }
         }
