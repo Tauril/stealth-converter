@@ -37,6 +37,8 @@ namespace convert
         cv::Mat* process(std::vector<cv::Mat> inputs);
         cv::Mat* process(cv::Mat input);
     private:
+        // this function is a hack
+        cv::Size* get_output_size(const cv::Mat&);
         inline void squarify(cv::Mat& img);
     };
 }
