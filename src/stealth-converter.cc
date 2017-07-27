@@ -34,6 +34,10 @@ int main(int argc, char** argv)
         help();
         return 0;
     }
+#ifdef PARALLEL
+    std::cout << "Parallel option actived\n";
+#endif
+
     ProgramChoice prgm = ProgramChoice::split;
     std::vector<std::string> params;
     for (ssize_t idx = 1; idx < argc; ++idx) {
@@ -68,6 +72,15 @@ int main(int argc, char** argv)
         // Order: top, left, front, right, back, down
         auto handler = convert::FrameHandler();
         handler.process_video_file(params[0]);
+    }
+    else if (prgm == ProgramChoice::recombine)
+    {
+      std::vector<std::string> sub_videos;
+
+      for (int i = 2; i < argc; i++)
+        sub_videos.emplace_back(argv[i]);
+
+      stream::writer::StreamWriter::Instance().construct_video(sub_videos);
     }
 
     return 0;

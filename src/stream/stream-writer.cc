@@ -37,7 +37,7 @@ namespace stream
 
           cv::VideoWriter vwriter;
           auto video_name =
-            "__stealth_reader_output_" + std::to_string(video_number) + ".mp4";
+            video_prefix_ + std::to_string(video_number) + video_suffix_;
           vwriter.open(video_name, 0x00000021,
                        StreamData::Instance().fps_get(),
                        cv::Size(video.get(CV_CAP_PROP_FRAME_WIDTH),
@@ -73,6 +73,46 @@ namespace stream
 #ifdef PARALLEL
       );
 #endif
+    }
+
+    void
+    StreamWriter::construct_video(
+                        const std::vector<std::string>& sub_videos) const
+    {
+      cv::VideoWriter vwriter;
+      auto video_name = video_prefix_ + video_suffix_;
+      // Awful.
+      cv::VideoCapture video_tmp(sub_videos[0]);
+      vwriter.open(video_name, 0x00000021,
+                   video_tmp.get(CV_CAP_PROP_FPS),
+                   cv::Size(video_tmp.get(CV_CAP_PROP_FRAME_WIDTH),
+                            video_tmp.get(CV_CAP_PROP_FRAME_HEIGHT)));
+
+      if (!vwriter.isOpened())
+      {
+        std::cerr << "Fail to open writer" << std::endl;
+        std::exit(1);
+      }
+
+      video_tmp.release();
+      for (const auto& video_name : sub_videos)
+      {
+        cv::VideoCapture video(video_name);
+        int nb_frame = video.get(CV_CAP_PROP_FRAME_COUNT);
+
+        for (int j = 0; j < nb_frame; j++)
+        {
+          cv::Mat frame;
+
+          video >> frame;
+          vwriter << frame;
+
+          frame.release();
+        }
+
+        video.release();
+      }
+      vwriter.release();
     }
 
   } // namespace writer

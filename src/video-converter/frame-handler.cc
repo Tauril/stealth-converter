@@ -91,7 +91,7 @@ namespace convert
         cv::Mat frame;
         std::vector<cv::Mat*> outputs;
         cv::VideoWriter output_video;
-        if(!capture.isOpened()) {
+        if (!capture.isOpened()) {
             std::cerr << "Error: cannot open input video. Please input a valid video file name" << std::endl;
             return;
         }
