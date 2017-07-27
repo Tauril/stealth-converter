@@ -10,34 +10,45 @@
 
 namespace convert
 {
-    void FrameHandler::process(std::vector<std::string> inputs)
+
+    cv::Mat* FrameHandler::process(std::vector<std::string> inputs)
+    {
+        std::vector<cv::Mat> frames;
+        // Read the 6 input images
+        for (auto img : inputs) {
+            cv::Mat image = cv::imread(img, CV_LOAD_IMAGE_COLOR);
+            if (!image.data) {
+                std::cerr << "Error: cannot open image, wrong file name" << std::endl;
+                return nullptr;
+            }
+            frames.push_back(image);
+        }
+        return process(frames);
+    }
+
+    cv::Mat* FrameHandler::process(cv::Mat input)
+    {
+        std::vector<cv::Mat> vect;
+        vect.push_back(input);
+        return process(vect);
+    }
+
+    cv::Mat* FrameHandler::process(std::vector<cv::Mat> inputs)
     {
         assert(inputs.size() == 1 || inputs.size() == 6);
 
         std::vector<cv::Mat> frames;
         size_t width = 0;
         // Read the 6 input images
-        for (auto img : inputs) {
-            cv::Mat image = cv::imread(img, CV_LOAD_IMAGE_COLOR);
-            if (!image.data) {
-                printf( "No image data\n" );
-                return;
-            }
+        for (auto image : inputs) {
             squarify(image);
             width = image.rows;
             frames.push_back(image);
         }
 
-        /*
-        Initialise the algorithm:
-            the width of each input is 640 pixel,
-            the vertical view portion is PI (180 degrees),
-            the horizontal view portion is 2*PI (360 degrees).
-        In this case, the output image size will be calculated accordingly.
-        */
         Converter cvrt(width, constants::m_pi, 2.0 * constants::m_pi);
 
-        cv::Mat output(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), CV_8UC3);
+        cv::Mat* output = new cv::Mat(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), CV_8UC3);
 
         // Map the pixels from the panorama back to the source image
         for (size_t i = 0; i < cvrt.getPanoSizeH(); ++i) {
@@ -45,7 +56,7 @@ namespace convert
                 // Get the corresponding position of (i, j)
                 auto coord = cvrt.getCoordinate(i, j);
                 // output pixel
-                cv::Vec3b& rgba = output.at<cv::Vec3b>(j, i);
+                cv::Vec3b& rgba = output->at<cv::Vec3b>(j, i);
 
                 if (frames.size() == 1) {
                     if (coord->getCubeFace() == CubeFace::front) {
@@ -70,8 +81,33 @@ namespace convert
                 }
             }
         }
+        return output;
+    }
 
-        cv::imwrite("marques.png", output);
+
+    void FrameHandler::process_video_file(const std::string& input_video)
+    {
+        cv::VideoCapture capture(input_video);
+        cv::Mat frame;
+        std::vector<cv::Mat*> outputs;
+        cv::VideoWriter output_video;
+        if(!capture.isOpened()) {
+            std::cerr << "Error: cannot open input video. Please input a valid video file name" << std::endl;
+            return;
+        }
+        bool opened = capture.read(frame);
+        if (!opened) {
+            std::cerr << "Error: empty video file" << std::endl;
+            return;
+        }
+        cv::Size video_size = cv::Size(frame.cols, frame.rows);
+        output_video.open("test_name.mp4",  0x00000021, capture.get(CV_CAP_PROP_FPS), video_size, true);
+        while (opened) {
+            output_video << *process(frame);
+            opened = capture.read(frame);
+        }
+        capture.release();
+        output_video.release();
     }
 
     inline void FrameHandler::squarify(cv::Mat& img)

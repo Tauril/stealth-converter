@@ -30,7 +30,10 @@ namespace convert
     class FrameHandler
     {
     public:
-        void process(std::vector<std::string> inputs);
+        void process_video_file(const std::string& input_video);
+        cv::Mat* process(std::vector<std::string> inputs);
+        cv::Mat* process(std::vector<cv::Mat> inputs);
+        cv::Mat* process(cv::Mat input);
     private:
         inline void squarify(cv::Mat& img);
     };

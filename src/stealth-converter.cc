@@ -23,7 +23,7 @@ void help() {
     std::cerr << "usage:" << std::endl;
     std::cerr << "\thelp:\t\t" << "stealth-converter [-h|--help]" << std::endl;
     std::cerr << "\tsplit:\t\t" << "stealth-converter [-s|--split] <Video_Path>" << std::endl;
-    std::cerr << "\tconvert:\t" << "stealth-converter [-c|--convert] <Video_Path1> ..." << std::endl;
+    std::cerr << "\tconvert:\t" << "stealth-converter [-c|--convert] <Video_Path>" << std::endl;
     std::cerr << "\trecombine:\t" << "stealth-converter [-r|--recombine] ???????? " << std::endl;
 }
 
@@ -60,9 +60,14 @@ int main(int argc, char** argv)
         stream::writer::StreamWriter::Instance().split_video();
     }
     else if (prgm == ProgramChoice::convert) {
+        if (params.size() != 1)
+        {
+            help();
+            return 1;
+        }
         // Order: top, left, front, right, back, down
         auto handler = convert::FrameHandler();
-        handler.process(params);
+        handler.process_video_file(params[0]);
     }
 
     return 0;
