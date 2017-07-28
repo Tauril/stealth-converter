@@ -110,10 +110,10 @@ namespace convert
         //auto video_size = cv::Size(processed.cols, processed.rows);
         cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
                                      video_size);
-        tbb::mutex mutex;
         std::map<int, cv::Mat*> frames;
+        tbb::task_arena arena(1);
 #ifdef PARALLEL
-        tbb::parallel_for(size_t(0), size_t(cpt.get(CV_CAP_PROP_FRAME_COUNT)),
+        arena.execute([&]{tbb::parallel_for(size_t(0), size_t(cpt.get(CV_CAP_PROP_FRAME_COUNT)),
           [&](auto i) {
 #else
         for (ssize_t i = 0; i < cpt.get(CV_CAP_PROP_FRAME_COUNT); ++i) {
@@ -126,7 +126,7 @@ namespace convert
             frames[i] = p_frame;
             capture.release();
 #ifdef PARALLEL
-        });
+        });});
 #else
         }
 #endif
