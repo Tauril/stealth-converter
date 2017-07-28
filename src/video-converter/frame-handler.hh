@@ -46,18 +46,6 @@ namespace convert
          */
         cv::Mat* process(cv::Mat input);
     private:
-        /** \brief get the final frame dimensions (post processing) 
-         *  to instanciate the videoWriterbefore conversion. rdInv and rdInH
-         *  ought to be the same as the values used in the Converter instanciation.
-         *
-         * \param input cv::Mat& image file
-          * \param rdInV const          double   The radian of the view portion
-         * vertically, range [0.01, PI]
-         * \param rdInH const          double   The radian of the view portion
-         * horizontally, range [0.01, 2*PI]
-         * \return cv::Size the size
-         */
-        inline cv::Size get_output_size(const cv::Mat&, double rdInV, double rdInH);
         /** \brief return a square picture if it isn't. Add black pixels padding
          *
          * \param input cv::Mat& image file

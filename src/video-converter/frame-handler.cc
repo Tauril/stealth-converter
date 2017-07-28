@@ -97,13 +97,8 @@ namespace convert
         }
         std::string trunced_name = input_video;
         trunced_name.erase(trunced_name.end() - 4, trunced_name.end());
-
         auto new_name = trunced_name + "_new.mp4";
 
-        // Always use the same rdInV and rdInH used in the Converter constructor
-        auto video_size = get_output_size(frame, constants::m_pi, 2.0 * constants::m_pi);
-        cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
-                                     video_size);
         std::map<int, cv::Mat*> frames;
         tbb::task_arena arena(1);
 #ifdef PARALLEL
@@ -124,10 +119,17 @@ namespace convert
 #else
         }
 #endif
+        if (frames.empty())
+            return;
+        auto video_size = cv::Size(frames[0]->cols, frames[0]->rows);
+        cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
+                                     video_size);
         for (auto frame : frames)
           output_video << *frame.second;
 
         output_video.release();
         cpt.release();
+        for (auto frame : frames)
+            delete frame.second;
     }
 }

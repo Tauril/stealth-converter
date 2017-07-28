@@ -28,14 +28,4 @@ namespace convert
                        cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
         img = square_img;
     }
-
-    inline cv::Size FrameHandler::get_output_size(const cv::Mat& image, double rdInV, double rdInH)
-    {
-        auto cols = image.cols;
-        auto rows = image.rows;
-        auto width = (cols > rows) ? cols : rows;
-        auto final_rows = width * rdInH / constants::m_pi2;
-        auto final_cols = width * rdInV / constants::m_pi2;
-        return cv::Size(final_cols, final_rows);
-    }
 }
