@@ -14,7 +14,15 @@ namespace convert
 
     class CubeCoordinate
     {
+    /** Representation of a coordinate inside a cubemap
+     */
     public:
+        /** \brief Constructor
+         *
+         * \param face Cubeface face of the cubemap
+         * \param x axis
+         * \param y axis
+         */
         CubeCoordinate(CubeFace face, double x, double y);
         inline CubeFace getCubeFace() const;
         inline double getX() const;

@@ -5,17 +5,7 @@
 
 namespace convert
 {
-    namespace constants
-    {
-        const double m_pi = 3.14159265358979323846;
-        const double m_pi2 = 1.57079632679489661923;
-        const double m_pi4 = 0.78539816339744830962;
-
-        // sphere radius
-        const int sphere_radius = 1.0;
-    }
-
-    // At the moment the main function of the converter (getCoordinate) returns
+    // The main function of the converter (getCoordinate) returns
     // the adequate position in the cubemap from which the pixel should be
     // taken given the coordinate x y in the equirectangle projection
     class Converter

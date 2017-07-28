@@ -1,4 +1,5 @@
 #include "convert.hh"
+#include "helper.hh"
 
 namespace convert
 {

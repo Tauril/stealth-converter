@@ -100,7 +100,8 @@ namespace convert
 
         auto new_name = trunced_name + "_new.mp4";
 
-        auto video_size = get_output_size(frame);
+        // Always use the same rdInV and rdInH used in the Converter constructor
+        auto video_size = get_output_size(frame, constants::m_pi, 2.0 * constants::m_pi);
         cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
                                      video_size);
         std::map<int, cv::Mat*> frames;
