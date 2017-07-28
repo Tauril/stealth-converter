@@ -2,6 +2,7 @@
 #include <string>
 #include <cassert>
 #include <iostream>
+#include <map>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -51,15 +52,8 @@ namespace convert
         cv::Mat* output = new cv::Mat(cvrt.getPanoSizeV() , cvrt.getPanoSizeH(), CV_8UC3);
 
         // Map the pixels from the panorama back to the source image
-#ifdef NONE
-        tbb::parallel_for(size_t(0), size_t(cvrt.getPanoSizeH()), [&](auto i)
-        {
-          tbb::parallel_for(size_t(0), size_t(cvrt.getPanoSizeV()), [&](auto j)
-          {
-#else
         for (size_t i = 0; i < cvrt.getPanoSizeH(); ++i) {
             for (size_t j = 0; j < cvrt.getPanoSizeV(); ++j) {
-#endif
                 // Get the corresponding position of (i, j)
                 auto coord = cvrt.getCoordinate(i, j);
                 // output pixel
@@ -86,12 +80,8 @@ namespace convert
                     //     std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
                     rgba = toto.at<cv::Vec3b>(y_coord, x_coord);
                 }
-#ifdef NONE
-            });});
-#else
             }
         }
-#endif
         return output;
     }
 
@@ -118,28 +108,32 @@ namespace convert
         auto video_size = get_output_size(frame);
         //auto processed = *process(frame);
         //auto video_size = cv::Size(processed.cols, processed.rows);
+        cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
+                                     video_size);
+        tbb::mutex mutex;
+        std::map<int, cv::Mat*> frames;
 #ifdef PARALLEL
-        tbb::parallel_for(size_t(0), size_t(cpt.get(CV_CAP_PROP_FRAME_COUNT)), [&](auto i) {
+        tbb::parallel_for(size_t(0), size_t(cpt.get(CV_CAP_PROP_FRAME_COUNT)),
+          [&](auto i) {
 #else
-        for (ssize_t i = 0; i < capture.get(CV_CAP_PROP_FRAME_COUNT); ++i) {
+        for (ssize_t i = 0; i < cpt.get(CV_CAP_PROP_FRAME_COUNT); ++i) {
 #endif
             cv::VideoCapture capture(input_video);
-            cv::VideoWriter output_video(new_name, 0x00000021, capture.get(CV_CAP_PROP_FPS),
-                                         *video_size);
-            output_video.set(CV_CAP_PROP_POS_FRAMES, i);
             capture.set(CV_CAP_PROP_POS_FRAMES, i);
             cv::Mat frame;
             capture.read(frame);
-            auto p_frame = *(this->process(frame));
-            output_video << p_frame;
+            auto p_frame = this->process(frame);
+            frames[i] = p_frame;
             capture.release();
-            output_video.release();
 #ifdef PARALLEL
         });
 #else
         }
 #endif
-        delete video_size;     
+        for (auto frame : frames)
+          output_video << *frame.second;
+
+        output_video.release();
         cpt.release();
     }
 
@@ -169,13 +163,13 @@ namespace convert
         img = square_img;
     }
 
-    cv::Size* FrameHandler::get_output_size(const cv::Mat& image)
+    cv::Size FrameHandler::get_output_size(const cv::Mat& image)
     {
         auto cols = image.cols;
         auto rows = image.rows;
         auto width = (cols > rows) ? cols : rows;
         auto final_rows = width * 2;
         auto final_cols = width * 4;
-        return new cv::Size(final_cols, final_rows);
+        return cv::Size(final_cols, final_rows);
     }
 }
