@@ -1,7 +1,7 @@
-#include <iostream>
 #include <algorithm>
-#include <string>
 #include <cstring>
+#include <iostream>
+#include <string>
 #include <vector>
 #include "stream/stream-reader.hh"
 #include "stream/stream-writer.hh"
@@ -19,7 +19,7 @@ enum class ProgramChoice {
     recombine
 };
 
-void help() {
+void help_display() {
     std::cerr << "usage:" << std::endl;
     std::cerr << "\thelp:\t\t" << "stealth-converter [-h|--help]" << std::endl;
     std::cerr << "\tsplit:\t\t" << "stealth-converter [-s|--split] <Video_Path>" << std::endl;
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2 || cmdOptionExists(argv, argv + argc, "-h")
             || cmdOptionExists(argv, argv + argc, "--help")) {
-        help();
+        help_display();
         return 0;
     }
 #ifdef PARALLEL
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     if (prgm == ProgramChoice::split) {
         if (params.size() != 1)
         {
-            help();
+            help_display();
             return 1;
         }
 

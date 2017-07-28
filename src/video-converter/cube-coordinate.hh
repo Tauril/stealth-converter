@@ -16,14 +16,15 @@ namespace convert
     {
     public:
         CubeCoordinate(CubeFace face, double x, double y);
-        CubeFace getCubeFace() const;
-        double getX() const;
-        double getY() const;
+        inline CubeFace getCubeFace() const;
+        inline double getX() const;
+        inline double getY() const;
 
     private:
         CubeFace face;
         double x;
         double y;
     };
-
 }
+
+#include "cube-coordinate.hxx"

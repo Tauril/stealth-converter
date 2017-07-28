@@ -58,52 +58,52 @@ namespace convert
 
         ~Converter();
 
-        const CubeCoordinate* getCoordinate(const unsigned int x,
+        inline const CubeCoordinate* getCoordinate(const unsigned int x,
                                             const unsigned int y) const;
 
-        unsigned int getPanoSizeV() const;
-        unsigned int getPanoSizeH() const;
+        inline unsigned int getPanoSizeV() const;
+        inline unsigned int getPanoSizeH() const;
 
     private:
         /**< The map from panorama coordinates to cubic coordinates */
-        std::vector<CubeCoordinate*> map;
+        std::vector<CubeCoordinate*> map_;
 
-        unsigned int pxCamV;    /**< The vertical pixel of a camera */
-        unsigned int pxCamH;    /**< The horizontal pixel of a camera */
+        unsigned int pxCamV_;    /**< The vertical pixel of a camera */
+        unsigned int pxCamH_;    /**< The horizontal pixel of a camera */
 
-        double radius;          /**< The radius of the sphere */
+        double radius_;          /**< The radius of the sphere */
 
-        double rdPanoV;         /**< The vertical view portion */
-        double rdPanoH;         /**< The horizontal view portion */
+        double rdPanoV_;         /**< The vertical view portion */
+        double rdPanoH_;         /**< The horizontal view portion */
 
         //-------- output information
-        unsigned int pxPanoSizeV;   /**< The vertical pixels of the panorama */
-        unsigned int pxPanoSizeH; /**< The horizontal pixels of the panorama */
+        unsigned int pxPanoSizeV_;   /**< The vertical pixels of the panorama */
+        unsigned int pxPanoSizeH_; /**< The horizontal pixels of the panorama */
 
         //-------- to access the pixel
-        CubeFace    cubeFaceId; /**< The cube face to be read */
-        double      mappedX;    /**< The x coordinate mapped on the cube face */
-        double      mappedY;    /**< The y coordinate mapped on the cube face */
+        CubeFace    cubeFaceId_; /**< The cube face to be read */
+        double      mappedX_;    /**< The x coordinate mapped on the cube face */
+        double      mappedY_;    /**< The y coordinate mapped on the cube face */
 
         //-------- The temp variables TODO: DELETE AS MUCH AS POSSIBLE
-        double normTheta;   /**< The normalised theta */
-        double resCal;      /**< The resolution used for calculation */
-        double normFactorX; /**< The normalisation factor for x */
-        double normFactorY; /**< The normalisation factor for y */
+        double normTheta_;   /**< The normalised theta */
+        double resCal_;      /**< The resolution used for calculation */
+        double normFactorX_; /**< The normalisation factor for x */
+        double normFactorY_; /**< The normalisation factor for y */
 
         /**< The size ratio of the mapped x and the actual radius */
-        double sizeRatio;
+        double sizeRatio_;
 
-        double tX;          /**< x coordinate in 3D space */
-        double tY;          /**< y coordinate in 3D space */
-        double tZ;          /**< z coordinate in 3D space */
+        double tX_;          /**< x coordinate in 3D space */
+        double tY_;          /**< y coordinate in 3D space */
+        double tZ_;          /**< z coordinate in 3D space */
 
-        double tTheta;      /**< The radian horizontally */
-        double tPhi;        /**< The radian vertically */
+        double tTheta_;      /**< The radian horizontally */
+        double tPhi_;        /**< The radian vertically */
 
         /**< The threshold of phi, it separates the top, middle and down
         of the cube, which are the edges of the top and down surface */
-        double phiThreshold;
+        double phiThreshold_;
 
         /** \brief Calculate the x and y coordinates of given i and j
          *
@@ -131,11 +131,7 @@ namespace convert
          */
         inline void locate(const double& axis, const double& px,
                            const double& py, const double& rad);
-
-        /** Test if double value in in the range of [small, large)
-            TODO: move to helper class
-        */
-        inline bool isDoubleInRange(const double& value, const double& small,
-                                    const double& large, const double& epsilon);
     };
 }
+
+#include "convert.hxx"

@@ -1,17 +1,15 @@
-#include <vector>
-#include <string>
 #include <cassert>
 #include <iostream>
 #include <map>
+#include <string>
+#include <vector>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include "frame-handler.hh"
 #include "helper.hh"
 
 namespace convert
 {
-
     cv::Mat* FrameHandler::process(std::vector<std::string> inputs)
     {
         std::vector<cv::Mat> frames;
@@ -64,8 +62,7 @@ namespace convert
                         rgba = frames[0].at<cv::Vec3b>(coord->getY(), coord->getX());
                     }
                     else {
-                        // For now no noise. Later if the video is properly converted
-                        // noise will be inserted here.
+                        // Noise can be inserted here
                         rgba[0] = 0;
                         rgba[1] = 0;
                         rgba[2] = 0;
@@ -76,8 +73,6 @@ namespace convert
                     const auto& toto = frames[index];
                     int y_coord = coord->getY();
                     int x_coord = coord->getX();
-                    // if (x_coord > 640 || y_coord > 640)
-                    //     std::cout << "y: " << y_coord << " x: " << x_coord << std::endl; 
                     rgba = toto.at<cv::Vec3b>(y_coord, x_coord);
                 }
             }
@@ -106,8 +101,6 @@ namespace convert
         auto new_name = trunced_name + "_new.mp4";
 
         auto video_size = get_output_size(frame);
-        //auto processed = *process(frame);
-        //auto video_size = cv::Size(processed.cols, processed.rows);
         cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
                                      video_size);
         std::map<int, cv::Mat*> frames;
@@ -135,41 +128,5 @@ namespace convert
 
         output_video.release();
         cpt.release();
-    }
-
-    inline void FrameHandler::squarify(cv::Mat& img)
-    {
-        if (img.rows == img.cols)
-            return;
-        ssize_t top = 0;
-        ssize_t bottom = 0;
-        ssize_t left = 0;
-        ssize_t right = 0;
-        ssize_t side = 0;
-
-        if (img.rows > img.cols) {
-            left = (img.rows - img.cols) / 2;
-            right = (img.rows - img.cols) / 2;
-            side = img.rows;
-        }
-        else {
-            top = (img.cols - img.rows) / 2;
-            bottom = (img.cols - img.rows) / 2;
-            side = img.cols;
-        }
-        cv::Mat square_img(side, side, CV_8UC3);
-        copyMakeBorder(img, square_img, top, bottom, left, right,
-                       cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
-        img = square_img;
-    }
-
-    cv::Size FrameHandler::get_output_size(const cv::Mat& image)
-    {
-        auto cols = image.cols;
-        auto rows = image.rows;
-        auto width = (cols > rows) ? cols : rows;
-        auto final_rows = width * 2;
-        auto final_cols = width * 4;
-        return cv::Size(final_cols, final_rows);
     }
 }
