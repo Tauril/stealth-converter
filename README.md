@@ -12,4 +12,5 @@ Requirements:
 launch:
 
 ./configure -DPARALLEL=[0,1]
+
 ./stealth-converter file.mp4
