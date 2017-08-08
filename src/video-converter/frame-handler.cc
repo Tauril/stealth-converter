@@ -122,6 +122,7 @@ namespace convert
         if (frames.empty())
             return;
         auto video_size = cv::Size(frames[0]->cols, frames[0]->rows);
+        std::cout << "Ola : "  << frames[0]->cols << " : " << frames[0]->rows; 
         cv::VideoWriter output_video(new_name, 0x00000021, cpt.get(CV_CAP_PROP_FPS),
                                      video_size);
         for (auto frame : frames)
