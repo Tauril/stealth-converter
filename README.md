@@ -66,6 +66,10 @@ reassemble:
 ./stealth-converter [-r|--recombine] <Sub_videos>
 ```
 
+## Use to bypass YouTube's Content ID
+
+(Youtube's copytight definition)[https://support.google.com/youtube/answer/2797466?hl=en]
+
 ## Authors
 
 * **Guillaume Marques** - *Tauril*
