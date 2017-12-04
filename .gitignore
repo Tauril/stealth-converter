@@ -9,3 +9,4 @@
 # Local.
 build/
 stealth-converter
+Makefile
