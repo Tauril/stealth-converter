@@ -27,7 +27,8 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Cubemap
 
-* Cube of pictures, where the user is inside.
+* Cube of pictures
+* The viewer is supposed to be at the center of the cube.
 * Composed of 6 pictures, 1 for each face: top, bottom, left, right, front, back
 
 # Cubemap Example
@@ -36,13 +37,20 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Equirectangular projection
 
-* Equidistant cylindrical projection.
-* Usually converted from a cubemap.
-* Apply deformation to the faces to get an equirectangle.
+* Map the surface of a sphere to a flat image.
+* Aspect ratio of 2:1 (width/height ratio).
+* For example the plane chart of the world.
 
 # Equirectangle Example
 
 ![](images/equirectangle.png)
+
+# Conversion principles
+
+* Spherical map
+* Embed the cubemap in a sphere and project rays froms the center
+  to the sphere.
+* Apply the equirectangular projection. (spherical coordinates to carthesian)
 
 # Stealth converter principle
 
@@ -84,16 +92,24 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Distributing to multiple machines
 
-FIXME
-
-# Conversion principles
-
-FIXME
+* Task queue
+* Job schueduler, contains list of jobs to send to clients.
+* No job priority (send them asap).
 
 # Performance gain with this method
 
-FIXME
+* Multithreading: 3.7 times speedup.
+* Multiple runners: 5 times speedup.
+* More than 18 times faster.
 
 # Results
 
-FIXME
+* Video sucessfully uploaded.
+* Sufficient to put the original video frame in the top part of the
+  cubemap without noise.
+
+# Conclusion
+
+* Code available here: github.com/Tauril/stealth-converter
+
+* Any Questions ?
