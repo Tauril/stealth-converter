@@ -20,11 +20,19 @@ enum class ProgramChoice {
 };
 
 void help_display() {
-    std::cerr << "usage:" << std::endl;
-    std::cerr << "\thelp:\t\t" << "stealth-converter [-h|--help]" << std::endl;
-    std::cerr << "\tsplit:\t\t" << "stealth-converter [-s|--split] <Video_Path>" << std::endl;
-    std::cerr << "\tconvert:\t" << "stealth-converter [-c|--convert] <Video_Path>" << std::endl;
-    std::cerr << "\trecombine:\t" << "stealth-converter [-r|--recombine] <Sub_videos>" << std::endl;
+    std::cerr << "usage:" << std::endl
+        << "\thelp:\t\t"
+        << "stealth-converter [-h|--help]"
+        << std::endl
+        << "\tsplit:\t\t"
+        << "stealth-converter [-s|--split] <Video_Path>"
+        << std::endl
+        << "\tconvert:\t"
+        << "stealth-converter [-c|--convert] <Video_Path>"
+        << std::endl
+        << "\trecombine:\t"
+        << "stealth-converter [-r|--recombine] <Sub_videos>"
+        << std::endl;
 }
 
 int main(int argc, char** argv)
