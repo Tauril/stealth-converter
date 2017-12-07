@@ -66,9 +66,10 @@ reassemble:
 ./stealth-converter [-r|--recombine] <Sub_videos>
 ```
 
-## Use to bypass YouTube's Content ID
+## TODO
 
-[Youtube's copyright definition](https://support.google.com/youtube/answer/2797466?hl=en)
+* [ ] Add option to choose the conversion face
+* [ ] Add option to generate noise
 
 ## Authors
 

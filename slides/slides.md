@@ -1,6 +1,12 @@
+% Having fun with YouTube's Content ID
+% Loïc Banet;
+  Gaël Gilet--Couraud;
+  Guillaume Marques
+% December 8, 2017
+
 # Having fun with Content ID
 
-How to bypass YouTube Content ID without major visual artifacts.
+How to bypass YouTube's Content ID without major visual artifacts.
 
 # What is YouTube's Content ID
 
@@ -17,7 +23,7 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Solution
 
-* 360° video.
+* **360° video**.
 * Original video is embedded inside.
 * Noise around to fool the tool.
 
@@ -25,32 +31,44 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 * Like a normal video with equirectangle frames.
 
-# Cubemap
-
-* Cube of pictures
-* The viewer is supposed to be at the center of the cube.
-* Composed of 6 pictures, 1 for each face: top, bottom, left, right, front, back
-
-# Cubemap Example
-
-![](images/cubemap.png)
-
 # Equirectangular projection
 
 * Map the surface of a sphere to a flat image.
 * Aspect ratio of 2:1 (width/height ratio).
 * For example the plane chart of the world.
 
-# Equirectangle Example
+# Plane chart
 
-![](images/equirectangle.png)
+![Plane chart](images/plane.jpg)
+
+# Cubemap
+
+* Cube of pictures
+* Composed of 6 pictures, 1 for each face: top, bottom, left, right, front, back
+* The viewer is supposed to be at the center of the cube.
+
+# Cubemap Example
+
+![Cubemap](images/cubemap.png)
 
 # Conversion principles
 
 * Spherical map
-* Embed the cubemap in a sphere and project rays froms the center
+* Embed a sphere in the cubemap and project rays froms the center
   to the sphere.
 * Apply the equirectangular projection. (spherical coordinates to carthesian)
+
+# Cubemap to equirectangle
+
+![Projection](images/sphere.png)
+
+# Cubemap Example
+
+![Cubemap](images/cubemap.png)
+
+# Equirectangle Example
+
+![Equirectangle](images/equirectangle.png)
 
 # Stealth converter principle
 
@@ -66,8 +84,8 @@ How to bypass YouTube Content ID without major visual artifacts.
 # Solution
 
 * Program designed to be distributable.
-* Multithreaded.
 * Distributed to multiple machines.
+* Multithreaded.
 
 # Flow of the program
 
@@ -81,26 +99,28 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Splitting and Reassembling into sub-videos
 
-* FFmpeg
-  * Detect frame number of each iframe
-    * intra-coded frames, self-sufficient
-    * Complete images, as opposed to Pframes and Bframes
-    * Useful to process each iframe in any order (multithreaded)
-* opencv
-  * Split the video from the previous iframe, up to the next one
-  * We have as many sub-videos as there are iframes
+## FFmpeg
+
+* Detect frame number of each iframe.
+    * intra-coded frames, self-sufficient.
+    * Complete images, as opposed to Pframes and Bframes.
+    * Useful to process each iframe in any order (multithreaded).
+
+## OpenCV
+
+* Split the video from the previous iframe, up to the next one.
+* We have as many sub-videos as there are iframes.
 
 # Distributing to multiple machines
 
-* Task queue
+* **Task queue**
 * Job schueduler, contains list of jobs to send to clients.
-* No job priority (send them asap).
 
 # Performance gain with this method
 
 * Multithreading: 3.7 times speedup.
 * Multiple runners: 5 times speedup.
-* More than 18 times faster.
+* More than **18** times faster.
 
 # Results
 
@@ -110,6 +130,6 @@ How to bypass YouTube Content ID without major visual artifacts.
 
 # Conclusion
 
-* Code available here: github.com/Tauril/stealth-converter
+* Base code available here: **github.com/Tauril/stealth-converter**
 
-* Any Questions ?
+* Any Questions?
