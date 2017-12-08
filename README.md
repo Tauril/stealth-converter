@@ -11,6 +11,23 @@ reassembled into a whole.
 To further increase performance we parallelized the conversions of the frames
 when a configurable option is activated.
 
+## Application
+
+### Disclaimer
+
+This repository is the fruit of our research.
+In no event shall the authors of this project be liable for any use
+that would not respect the terms and conditions of YouTube's or any
+other website.
+We decline responsability for the use of our software for law infringement.
+
+### Having fun with YouTube's Content ID
+
+We made a talk about a possible application of our project for the
+"nuit de l'info" hosted by gconf on the 12/08/2017 at EPITA.
+* [The talk is available here.](https://youtu.be/Iv0XtzvmJqs?t=4h41m40s)
+* [The slides are available here.](slides/slides.md)
+
 ## Getting Started
 
 The project is not installable, you however can get the executable
