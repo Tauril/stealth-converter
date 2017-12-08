@@ -1,13 +1,21 @@
 # Stealth Converter
 
+![](https://github.com/tauril/stealth-converter/blob/master/resources/matrix_bypassed.gif)
+
+![](https://github.com/tauril/stealth-converter/blob/master/resources/blocked_vs_allowed.png)
+
 Video encoder to assemble standard videos into 360° videos.
+
 The challenge was to break YouTube copyright infringement by embedding classic
 videos into 360 ones and upload it on YouTube.
-As it took a lot of time to process videos we designed the executable with
+
+As it took a lot of time to process videos, we designed the executable with
 three parts to be able to distribute the computations on multiple computers.
-The original video is splitted then each sub-video is sent to a different
+
+The original video is split then each sub-video is sent to a different
 machine that will do the conversion process. Finally the sub-videos are
 reassembled into a whole.
+
 To further increase performance we parallelized the conversions of the frames
 when a configurable option is activated.
 
@@ -96,4 +104,3 @@ reassemble:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
