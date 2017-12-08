@@ -49,7 +49,7 @@ cloning the repository and running cmake.
 git clone https://github.com/Tauril/stealth-converter.git
 cd stealth-converter
 ./configure -DPARALLEL=[0,1]
-cmake stealth-converter
+cmake .
 make
 ```
 
