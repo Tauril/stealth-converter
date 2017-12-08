@@ -32,7 +32,7 @@ We decline responsability for the use of our software for law infringement.
 ### Having fun with YouTube's Content ID
 
 We made a talk about a possible application of our project for the
-"nuit de l'info" hosted by gconf on the 12/08/2017 at EPITA.
+"nuit de l'info" hosted by GConfs on the 12/08/2017 at EPITA.
 * [The talk is available here.](https://youtu.be/Iv0XtzvmJqs?t=4h41m40s)
 * [The slides are available here.](slides/slides.md)
 
