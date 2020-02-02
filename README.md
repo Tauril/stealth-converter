@@ -91,7 +91,7 @@ reassemble:
 ./stealth-converter [-r|--recombine] <Sub_videos>
 ```
 
-## TODO
+## <s>TO</s>WON'T DO
 
 * [ ] Add option to choose the conversion face
 * [ ] Add option to generate noise
