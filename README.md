@@ -98,6 +98,7 @@ reassemble:
 
 ## Authors
 
+* **Gaël Gilet-Couraud**
 * **Guillaume Marques** - *Tauril*
 * **Loic Banet** - *banetl*
 
